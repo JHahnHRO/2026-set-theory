@@ -1,0 +1,58 @@
+\begin{definition}
+    Let $A$ be a well-ordered set. An \emph{initial segment} is a subset $S\subseteq A$ such that
+    \[\forall \alpha\in S, \alpha'\in A: \alpha'\leq \alpha \implies \alpha'\in S\]
+\end{definition}
+
+\begin{remark}
+    Let $A$ be any well-ordered set.
+
+    $\emptyset$ and $A$ itself are initial segments. Sets of the form $A_{<\alpha}$ and $A_{\leq\alpha}$ are initial segments.
+
+    Any \emph{proper}, initial segment $S\subsetneq A$ is of the form $A_{<\alpha}$ for a unique $\alpha\in A$, namely the smallest element of $A\setminus S$.
+
+    Obviously, $ \alpha'\leq\alpha \iff A_{<\alpha'} \subseteq A_{<\alpha}$.
+\end{remark}
+
+\begin{lemma}
+    \begin{enumerate}
+        \item For any two well-ordered sets $A,B$ there is at most one isomorphism $A\to B$.
+        \item The only initial segment of $A$ isomorphic to $A$ is $A$ itself. In particular: All initial segments of $A$ are pairwise non-isomorphic.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    a. Transfinite induction along $A$: Let $f,g:A\to B$ be two isomorphism, $\alpha\in A$ and assume $f(\beta)=g(\beta)$ for all $\beta < \alpha$. Set $A':=A_{<\alpha}$.
+
+    Then by construction $\alpha$ is the smallest element of $A\setminus A'$ and therefore the isomorphisms $f$ and $g$ must map it to the smallest element of $B\setminus f(A')$ and $B\setminus g(A')$ respectively. But by assumption, $f(A')=g(A')$ so that $f(\alpha)=g(\alpha)$.
+
+    Therefore, $f(\alpha)=g(\alpha)$ for all $\alpha\in A$.
+
+    \medskip
+    b. Assume $f: A\to A_0$ is an isomorphism onto an initial segment $A_0\subsetneq A$. If there was an $\alpha\in A\setminus A_0$, then $f(\alpha) < \alpha$. But then by induction $f^{n+1}(\alpha)<f^n(\alpha)$ for all $n\in\IN$ so that we get an infinite descending sequence in $A$ which does not exist because $A$ is well-ordered. Therefore $A_0=A$.
+\end{proof}
+
+\begin{remark}
+    This means that we can strengthen the previous observation: $\alpha'\leq\alpha$ iff $A_{<\alpha'}$ is merely isomorphic to an initial segment of $A_{<\alpha}$.
+\end{remark}
+
+\begin{theorem}[\enquote{The class of well ordered sets is well-ordered}]
+    Given two well-ordered sets $A,B$ exactly one of the following happens:
+    \begin{enumerate}
+        \item $A$ is isomorphic to a proper initial segment of $B$
+        \item $A\isomorphic B$
+        \item $B$ is isomorphic to a proper initial segment of $A$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    By the previous lemma, the three cases are mutually exclusive. Thus, we assume that we're neither in the second nor the third case and will prove that we're in the first.\medskip
+
+    We build a strictly monoton map $f:A\hookrightarrow B$ such that the image of $f$ is a proper initial segment of $B$ by transfinite recursion along $A$.
+
+    Note that the empty map is already a strictly monoton map $\emptyset \to B$ whose image $\emptyset$ is an initial segment so that we're done if $A$ is empty and $B$ is non-empty (which it must be if $A=\emptyset$ because we're not in case 2 by assumption).
+
+    \smallskip
+    Assume that $f$ is already defined for all $\alpha'<\alpha$ and that $\im(f)=f(A_{<\alpha})$ a proper initial segment of $B$, i.e. $\im(f) = B_{<\beta}$ for some $\beta\in B$.
+
+    Define an extension of $f$ by $\hat{f}(\alpha) := \beta$. That is strictly monoton by construction and
+    \[\im(\hat{f}) = \set{\beta} \cup \im(f) = \set{\beta} \cup B_{<\beta} = B_{\leq\beta}\]
+    is an initial segment of $B$. It is proper because otherwise $\hat{f}$ would be an isomorphism between $A_{\leq\alpha}$ and all of $B$ so that we'd be in cases 2 (if $\alpha=\max A$) or 3 (otherwise) contrary to our assumption.
+\end{proof}
