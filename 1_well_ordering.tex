@@ -3,15 +3,37 @@
     \[\forall \alpha\in S, \alpha'\in A: \alpha'\leq \alpha \implies \alpha'\in S\]
 \end{definition}
 
-\begin{remark}
+\begin{lemma}
     Let $A$ be any well-ordered set.
+    \begin{enumerate}
+        \item  $\emptyset$ and $A$ itself are initial segments. Sets of the form $A_{<\alpha}$ and $A_{\leq\alpha}$ are initial segments.
+        \item All \emph{proper}, initial segments of $A$ are of the form $A_{<\alpha}$ for a unique $\alpha\in A$, namely the smallest element of $A\setminus S$.
+        \item $ \alpha'\leq\alpha \iff A_{<\alpha'} \subseteq A_{<\alpha}$. In particular: The set of initial segments
+        \[ A^+ = \Set{A_{<\alpha} | \alpha\in A}\cup\set{A} \]
+        is itself well-ordered w.r.t.\ to inclusion and $A$ is its greatest element.
+    \end{enumerate}
+\end{lemma}
 
-    $\emptyset$ and $A$ itself are initial segments. Sets of the form $A_{<\alpha}$ and $A_{\leq\alpha}$ are initial segments.
+\begin{lemma}[Transfinite induction along well-ordered sets]
+    Let $A$ be a well-ordered set and $\phi$ a formula with a free variable.
+    \begin{enumerate}
+        \item If $\phi$ satisfies
+        \[(\forall \alpha'<\alpha : \phi(\alpha')) \implies \phi(\alpha)\]
+        for all $\alpha\in A$, then $\forall\alpha\in A: \phi(\alpha)$ holds.
+        \item If $\phi$ satisfies
+        \begin{enumerate}
+            \item $\phi(0)$ holds
+            \item If $\phi(\alpha')$ holds and $\alpha$ is the successor of $\alpha'$, then $\phi(\alpha)$ holds too.
+            \item If $\alpha$ is a limit and $\phi(\alpha')$ holds for all $\alpha'<\alpha$, then $\phi(\alpha)$ holds too.
+        \end{enumerate}
+        then $\forall\alpha\in A: \phi(\alpha)$ holds.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    Obviously, it is sufficient to prove a., since b. is just a restatement.
 
-    Any \emph{proper}, initial segment $S\subsetneq A$ is of the form $A_{<\alpha}$ for a unique $\alpha\in A$, namely the smallest element of $A\setminus S$.
-
-    Obviously, $ \alpha'\leq\alpha \iff A_{<\alpha'} \subseteq A_{<\alpha}$.
-\end{remark}
+    Let $F:=\Set{\alpha\in A | \neg\phi(\alpha)}$. Assume $F\neq\emptyset$ and let $\alpha$ be its smallest element. Then $\phi(\alpha')$ holds for all $\alpha'<\alpha$. But then by assumption on $\phi$, $\phi(\alpha)$ also holds contradicting to the minimality of $\alpha$.
+\end{proof}
 
 \begin{lemma}
     \begin{enumerate}
@@ -33,6 +55,58 @@
 \begin{remark}
     This means that we can strengthen the previous observation: $\alpha'\leq\alpha$ iff $A_{<\alpha'}$ is merely isomorphic to an initial segment of $A_{<\alpha}$.
 \end{remark}
+
+\begin{lemma}[Transfinite recursion along well-ordered sets]
+Recursion: Let $B$ be any set.
+\begin{enumerate}
+    \item Let
+    \[g: \text{part.Maps}(A\to B)\to B\]
+    Then there is a unique function $f: A\to B$ such that
+    \[\forall\alpha: f(\alpha) = g(f_{|A_{<\alpha}})\]
+    \item Let $h: P(B)\to B$. Then there is a unique function $f: A\to B$ such that
+    \[\forall\alpha: f(\alpha) = h(f(A_{<\alpha}))\]
+\end{enumerate}
+\end{lemma}
+\begin{remark}
+    In a recursion over $A=\IN$, we might define $f(n)$ by any computation $g$ that may depend on some or all $f(0), f(1), \ldots, f(n-1)$, i.e.\ any finite-length sequence of values in $B$.
+
+    The appropriate generalisation to sequences with arbitrary well-ordered index sets would be something like $\bigcup_{S\in A^+\setminus\set{A}}Maps(S\to B)$, i.e.\ certain partial maps $A\to B$.
+
+    Note that the set of partial maps $A\to B$ is may be identified with the set
+    \[\Set{G\in P(A\times B) | \forall x\in A\forall y,y'\in B: (x,y)\in G \wedge (x,y')\in G \implies y=y'}\]
+\end{remark}
+\begin{proof}
+    It is sufficient to prove a., because b. is the special case where $g$ is the function $g(f):=h(\im(f))$.
+
+    \medskip
+    The idea is to apply transfinite induction to the statement \enquote{$f$ is uniquely defined at $\alpha$}.
+    \medskip
+    Consider
+    \[D:=\Set{S\in A^+ | \exists!S\xrightarrow{f_S} B: \forall\alpha\in S: f(\alpha) = g(f_{|A_{<\alpha}})} \]
+
+    We prove $D=A^+$ by transfinite induction along $A^+$:
+
+    \smallskip
+    Step 1. $\emptyset\in D$ because the empty map has that property.
+
+    \smallskip
+    Step 2: If $S=A_{<\alpha} \in D$, then $\tilde{S}=A_{\leq\alpha}\in D$ as well, because
+    \[f_{\tilde{S}}(\beta) = \begin{cases}
+        g(f_S) & \beta = \alpha \\
+        f_S(\beta) & \beta<\alpha
+    \end{cases}\]
+    is the unique extension of $f_S$ to $\tilde{S}$ with the required property.
+
+    \smallskip
+    Step 3: $D$ is closed under unions.
+
+    If $S$ is in $D$, then any smaller initial segment $S'\subseteq S$ is also in $D$, because the restriction of $f_S$ also has the property. In particular $f_{S'} = (f_S)_{|S'}$, i.e.\ the functions are all compatible with each another.
+
+    That means that for any $D' \subseteq D$, $S:=\bigcup_{S'\in D'} S'$ is an initial segment and $f_S:=\bigcup_{S\in S'} f_{S'}$ is the unique function with the required property.
+
+    \medskip
+    Now note that the successor in $A^+$ of a proper initial segment $A_{<\alpha}$ is $A_{\leq\alpha}$. Therefore, steps 1, 2, and 3 correspond to the 0-case, the successor-case, and the limit-case respectively and transfinite inductions shows that all of $A^+$ is contained in $D$. In particular $A\in D$.
+\end{proof}
 
 \begin{theorem}[\enquote{The class of well ordered sets is well-ordered}]
     Given two well-ordered sets $A,B$ exactly one of the following happens:
